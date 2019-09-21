@@ -1,0 +1,4 @@
+.stack-work/
+bowling-kata-stack.cabal
+out/
+*~
