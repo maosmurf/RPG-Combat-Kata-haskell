@@ -1,14 +1,13 @@
-name:                bowling-kata-stack
+name:                rpg-combat-kata
 version:             0.1.0.0
 github:              "maosmurf/bowling-kata-stack"
-license:             BSD3
+license:             WTFPL
 author:              "Adam Zielinski"
 maintainer:          "maosmurf@gmail.com"
 copyright:           "2019 Adam Zielinski"
 
 extra-source-files:
 - README.md
-- ChangeLog.md
 
 # Metadata used when publishing your package
 # synopsis:            Short description of your package
@@ -17,7 +16,7 @@ extra-source-files:
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/githubuser/bowling-kata-stack#readme>
+description:         Please see the README on GitHub at <https://github.com/maosmurf/RPG-Combat-Kata-haskell#readme>
 
 dependencies:
 - base >= 4.7 && < 5
@@ -26,7 +25,7 @@ library:
   source-dirs: src
 
 executables:
-  bowling-kata-stack-exe:
+  rpg-combat-kata-exe:
     main:                Main.hs
     source-dirs:         app
     ghc-options:
@@ -34,10 +33,10 @@ executables:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - bowling-kata-stack
+    - rpg-combat-kata
 
 tests:
-  bowling-kata-stack-test:
+  unit:
     main:                Spec.hs
     source-dirs:         test
     ghc-options:
@@ -45,4 +44,6 @@ tests:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - bowling-kata-stack
+    - rpg-combat-kata
+    - hspec
+    - QuickCheck
