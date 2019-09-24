@@ -2,40 +2,39 @@ module Rpg where
 
 import Numeric.Natural (Natural)
 
-newtype Health =
-  H Natural
-  deriving (Eq, Show)
-
-newtype Level =
-  L Natural
-  deriving (Eq, Show)
-
 data State
   = Alive
   | Dead
   deriving (Eq, Show)
 
-type Character = (Health, Level, State)
+data Character =
+  Character
+    { health :: Natural
+    , level :: Natural
+    , state :: State
+    }
+  deriving (Eq, Show)
 
 newCharacter :: Character
-newCharacter = (H 1000, L 1, Alive)
+newCharacter = Character {health = 1000, level = 1, state = Alive}
 
 damage :: (Character, Character, Natural) -> Character
-damage ((_, _, Alive), (H def_h, def_l, Alive), amount) =
+damage (Character {state = Alive}, Character {health = def_h, level = def_l, state = Alive}, amount) =
   if amount >= def_h
-    then (H 0, def_l, Dead)
-    else (H (def_h - amount), def_l, Alive)
+    then Character {health = 0, level = def_l, state = Dead}
+    else Character {health = def_h - amount, level = def_l, state = Alive}
 
 heal :: (Character, Character, Natural) -> Character
-heal ((_, _, Alive), (H h, l, Alive), amount) = (H (min 1000 (amount + h)), l, Alive)
-heal ((_, _, Dead), (_, _, _), _) = error "A dead character cannot heal"
-heal ((_, _, _), (_, _, Dead), _) = error "A dead character cannot be healed"
+heal (Character {state = Alive}, Character {health = h, level = l, state = Alive}, amount) =
+  Character {health = min 1000 (amount + h), level = l, state = Alive}
+heal (Character {state = Dead}, _, _) = error "A dead character cannot heal"
+heal (_, Character {state = Dead}, _) = error "A dead character cannot be healed"
 
-healthOf :: Character -> Health
-healthOf (h, _, _) = h
+healthOf :: Character -> Natural
+healthOf Character {health = h} = h
 
-levelOf :: Character -> Level
-levelOf (_, l, _) = l
+levelOf :: Character -> Natural
+levelOf Character {level = l} = l
 
 stateOf :: Character -> State
-stateOf (_, _, s) = s
+stateOf Character {state = s} = s
