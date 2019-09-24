@@ -44,3 +44,6 @@ spec = do
     describe "Healing cannot raise health above 1000" $ do
       testHeal (Character {name = "Alice", health = 1000, level = 1, state = Alive}, 1) (\Character {health = h} -> h == 1000)
       testHeal (Character {name = "Bob", health = 999, level = 2, state = Alive}, 1) (\Character {health = h} -> h == 1000)
+    it "A Character cannot Deal Damage to itself." $
+      evaluate (damage (newCharacter "Alice", newCharacter "Alice", 0)) `shouldThrow`
+      errorCall "A Character cannot Deal Damage to itself."
