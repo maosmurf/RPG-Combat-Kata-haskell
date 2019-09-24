@@ -29,12 +29,3 @@ heal (Character {state = Alive}, blessed@Character {health = h, state = Alive}, 
   blessed {health = min 1000 (amount + h)}
 heal (Character {state = Dead}, _, _) = error "A dead character cannot heal"
 heal (_, Character {state = Dead}, _) = error "A dead character cannot be healed"
-
-healthOf :: Character -> Natural
-healthOf Character {health = h} = h
-
-levelOf :: Character -> Natural
-levelOf Character {level = l} = l
-
-stateOf :: Character -> State
-stateOf Character {state = s} = s
