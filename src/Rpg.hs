@@ -9,14 +9,15 @@ data State
 
 data Character =
   Character
-    { health :: Natural
+    { name :: String 
+    , health :: Natural
     , level :: Natural
     , state :: State
     }
   deriving (Eq, Show)
 
-newCharacter :: Character
-newCharacter = Character {health = 1000, level = 1, state = Alive}
+newCharacter :: String -> Character
+newCharacter name = Character {name = name, health = 1000, level = 1, state = Alive}
 
 damage :: (Character, Character, Natural) -> Character
 damage (Character {state = Alive}, defender@Character {health = def_h, state = Alive}, amount) =
