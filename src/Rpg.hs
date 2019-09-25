@@ -24,8 +24,7 @@ damage (Character {name = att_n, state = Alive}, defender@Character {name = def_
   | att_n == def_n = error "A Character cannot Deal Damage to itself."
   | amount >= def_h = defender {health = 0, state = Dead}
   | otherwise = defender {health = def_h - amount, state = Alive}
-heal :: (Character, Character, Natural) -> Character
-heal (Character {state = Alive}, blessed@Character {health = h, state = Alive}, amount) =
+heal :: (Character, Natural) -> Character
+heal (blessed@Character {health = h, state = Alive}, amount) =
   blessed {health = min 1000 (amount + h)}
-heal (Character {state = Dead}, _, _) = error "A dead character cannot heal"
-heal (_, Character {state = Dead}, _) = error "A dead character cannot be healed"
+heal (Character {state = Dead}, _) = error "A dead character cannot heal or be healed"
