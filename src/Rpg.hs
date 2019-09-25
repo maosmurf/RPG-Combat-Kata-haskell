@@ -20,10 +20,17 @@ newCharacter :: String -> Character
 newCharacter name = Character {name = name, health = 1000, level = 1, state = Alive}
 
 damage :: (Character, Character, Natural) -> Character
-damage (Character {name = att_n, state = Alive}, defender@Character {name = def_n, health = def_h, state = Alive}, amount)
-  | att_n == def_n = error "A Character cannot Deal Damage to itself."
-  | amount >= def_h = defender {health = 0, state = Dead}
-  | otherwise = defender {health = def_h - amount, state = Alive}
+damage (Character {name = att_n, level = att_l, state = Alive}
+  , target@Character { name = tar_n, health = tar_h, level = tar_l
+  , state = Alive}, amount)
+  | att_n == tar_n = error "A Character cannot Deal Damage to itself."
+  | real_dmg >= tar_h = target {health = 0, state = Dead}
+  | otherwise = target {health = tar_h - real_dmg, state = Alive}
+  where
+    real_dmg
+      | att_l > tar_l && att_l - tar_l >= 5 = round (toRational amount * 1.5)
+      | tar_l > att_l && (tar_l - att_l) >= 5 = round (toRational amount * 0.5)
+      | otherwise = amount
 heal :: (Character, Natural) -> Character
 heal (blessed@Character {health = h, state = Alive}, amount) =
   blessed {health = min 1000 (amount + h)}

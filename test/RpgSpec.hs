@@ -63,3 +63,26 @@ spec = do
     it "A Character cannot Deal Damage to itself." $
       evaluate (damage (newCharacter "Alice", newCharacter "Alice", 0)) `shouldThrow`
       errorCall "A Character cannot Deal Damage to itself."
+    describe "When dealing damage:" $ do
+      describe "If the target is 5 or more Levels above the attacker, Damage is reduced by 50%" $ do
+        testDamage
+          ( Character {name = "Victor", health = 1000, level = 1, state = Alive}
+          , Character {name = "Alice", health = 1000, level = 5, state = Alive}
+          , 100)
+          (\Character {health = h} -> h == 900)
+        testDamage
+          ( Character {name = "Victor", health = 1000, level = 1, state = Alive}
+          , Character {name = "Bob", health = 1000, level = 6, state = Alive}
+          , 100)
+          (\Character {health = h, state = s} -> h == 950)
+      describe "If the target is 5 or more levels below the attacker, Damage is increased by 50%" $ do
+        testDamage
+          ( Character {name = "Victor", health = 1000, level = 5, state = Alive}
+          , Character {name = "Alice", health = 1000, level = 1, state = Alive}
+          , 100)
+          (\Character {health = h} -> h == 900)
+        testDamage
+          ( Character {name = "Victor", health = 1000, level = 6, state = Alive}
+          , Character {name = "Bob", health = 1000, level = 1, state = Alive}
+          , 100)
+          (\Character {health = h, state = s} -> h == 850)
